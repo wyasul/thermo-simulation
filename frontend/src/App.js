@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import SolarDiagram from './SolarDiagram';
 
+
 // Initial default params
 const initialInputs = {
     area: 2.0,
@@ -39,14 +40,14 @@ const inputFields = {
     ],
     "Pump": [
         {name: "pumpPower", label: "Pump Power (W)"},
-        {name: "pumpEfficiency", label: "Pump Efficiency"},
+        {name: "pumpEfficiency", label: "Pump Efficiency (0-100%)"},
         {name: "hydraulicHead", label: "Hydraulic Head (m)"}
     ],
     "Environment": [
         {name: "minAmbientTemp", label: "Min Ambient Temp (°F)"},
         {name: "maxAmbientTemp", label: "Max Ambient Temp (°F)"},
         {name: "fixedTemp", label: "Fixed Temp (°F, or 'None')"},
-        {name: "cloudCover", label: "Cloud Cover (0-100)"},
+        {name: "cloudCover", label: "Cloud Cover (0-100%)"},
         {name: "U_L", label: "Heat Loss Coefficient (W/m²·K)"}
     ],
     "Simulation": [
@@ -83,12 +84,6 @@ function App() {
         const newParams = { ...inputs, [name]: value};
         setInputs(newParams);
 
-        const currentStep = selectedHour;
-        const newChanges = { 
-            ...inputChanges, 
-            [currentStep]: { ...inputChanges[currentStep], [name]: value } 
-        };
-        setInputChanges(newChanges);
 
     };
 
@@ -112,8 +107,8 @@ function App() {
                 const updatedInputs = { 
                     ...inputs, 
                     [name]: newValue,
-                    tankTemp: temperature[selectedHour]?.tankTemp || inputs.tankTemp,
-                    fluidTemp: temperature[selectedHour]?.fluidTemp || inputs.fluidTemp
+                    tankTemp: inputs.tankTemp,
+                    fluidTemp: inputs.fluidTemp
                 };
                 if (Object.values(updatedInputs).every(value => value !== '')) {
                     // Prepare the updated changes for the current hour
@@ -124,6 +119,8 @@ function App() {
                             [name]: newValue
                         }
                     };
+                    console.log(updatedInputs, updatedChanges)
+
 
                     // Run the simulation with updated inputs and changes
                     runSimulation(updatedInputs, updatedChanges, selectedHour);
@@ -308,7 +305,7 @@ function App() {
                             <p className="hour-display">Hour {selectedHour}</p>
                             <SolarDiagram
                                 panelTemp={temperature[selectedHour]?.panelTemp}
-                                tankTemp={temperature[selectedHour]?.tankTemp}
+                                tankTemp={(temperature[selectedHour]?.tankTemp)}
                                 fluidTemp={temperature[selectedHour]?.fluidTemp}
                                 ambientTemp={temperature[selectedHour]?.ambientTemp}
                                 minMaxTemps={calculateMinMaxTemps()}

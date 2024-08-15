@@ -247,10 +247,10 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
             // If fluid or tank temperature is changed, update the current temperatures
             if (inputChanges[step].fluidTemp !== undefined) {
                 currentFluidTemp = (inputChanges[step].fluidTemp);
-                currentPlateTemp = fahrenheitToCelsius(inputChanges[step].fluidTemp);
+                currentPlateTemp = (inputChanges[step].fluidTemp);
             }
             if (inputChanges[step].tankTemp !== undefined) {
-                currentTankTemp = fahrenheitToCelsius(inputChanges[step].tankTemp);
+                currentTankTemp = (inputChanges[step].tankTemp);
             }
         }
 
