@@ -46,8 +46,9 @@ describe('Panel Useful Energy Gain Calculations', () => {
       pumpPower: 50,
       hydraulicHead: 10,
       pumpEfficiency: 0.8,
+      density: 1000,
       mass_flow_rate: 0.03,
-      testAmbient: 2
+      testAmbient: 2,
     };
     const result = calculatePanelUsefulEnergyGain(...Object.values(highEfficiencyParams));
     
@@ -79,8 +80,9 @@ describe('Panel Useful Energy Gain Calculations', () => {
       pumpPower: 30,
       hydraulicHead: 5,
       pumpEfficiency: 0.7,
+      density: 1000,
       mass_flow_rate: null,
-      testAmbient: null
+      testAmbient: null,
     };
     const lowEfficiencyResult = calculatePanelUsefulEnergyGain(...Object.values(lowEfficiencyParams));
 
@@ -128,25 +130,25 @@ describe('Heat Transfer to Fluid Calculations', () => {
 
 describe('Heat Transfer to Tank Calculations', () => {
   test('calculateHeatTransferToTank returns unchanged temperature when fluid and tank are equal', () => {
-    const result = calculateHeatTransferToTank(40, 40, 1, 4186, 3600, 50, 5, 0.8);
+    const result = calculateHeatTransferToTank(40, 40, 1, 4186, 3600, 50, 5, 0.8,1000);
     expect(result).toBeCloseTo(40, 4);
   });
 
   test('calculateHeatTransferToTank is affected by pump power', () => {
-    const resultLowPower = calculateHeatTransferToTank(50, 40, 1, 4186, 3600, 25, 5, 0.8);
-    const resultHighPower = calculateHeatTransferToTank(50, 40, 1, 4186, 3600, 100, 5, 0.8);
+    const resultLowPower = calculateHeatTransferToTank(50, 40, 1, 4186, 3600, 25, 5, 0.8,1000);
+    const resultHighPower = calculateHeatTransferToTank(50, 40, 1, 4186, 3600, 100, 5, 0.8,1000);
     expect(resultHighPower).toBeGreaterThan(resultLowPower);
   });
 
   test('calculateHeatTransferToTank is affected by tank volume', () => {
-    const resultSmallTank = calculateHeatTransferToTank(50, 40, 0.5, 4186, 3600, 50, 5, 0.8);
-    const resultLargeTank = calculateHeatTransferToTank(50, 40, 2, 4186, 3600, 50, 5, 0.8);
+    const resultSmallTank = calculateHeatTransferToTank(50, 40, 0.5, 4186, 3600, 50, 5, 0.8,1000);
+    const resultLargeTank = calculateHeatTransferToTank(50, 40, 2, 4186, 3600, 50, 5, 0.8,1000);
     expect(resultSmallTank).toBeGreaterThan(resultLargeTank);
   });
 
   test('calculateHeatTransferToTank is affected by time step', () => {
-    const resultShortStep = calculateHeatTransferToTank(50, 40, 1, 4186, 1800, 50, 5, 0.8);
-    const resultLongStep = calculateHeatTransferToTank(50, 40, 1, 4186, 7200, 50, 5, 0.8);
+    const resultShortStep = calculateHeatTransferToTank(50, 40, 1, 4186, 1800, 50, 5, 0.8,1000);
+    const resultLongStep = calculateHeatTransferToTank(50, 40, 1, 4186, 7200, 50, 5, 0.8,1000);
     expect(resultLongStep).toBeGreaterThan(resultShortStep);
   });
 });
@@ -172,7 +174,8 @@ describe('Temperature Simulation', () => {
       U_L: 5,
       hydraulicHead: 5,
       pumpEfficiency: 0.8,
-      fixedTemp: null
+      fixedTemp: null,
+      density: 1000
     };
     const inputChanges = {};
     const result = simulateTemperature(initialParams, inputChanges);
@@ -199,7 +202,8 @@ describe('Temperature Simulation', () => {
       U_L: 5,
       hydraulicHead: 5,
       pumpEfficiency: 0.8,
-      fixedTemp: null
+      fixedTemp: null,
+      density: 1000
     };
     const inputChanges = {
       12: { cloudCover: 50 }
@@ -229,7 +233,8 @@ describe('Temperature Simulation', () => {
       U_L: 8,
       hydraulicHead: 5,
       pumpEfficiency: 0.7,
-      fixedTemp: null
+      fixedTemp: null,
+      density: 1000
     };
 
     const lowEfficiencyResult = simulateTemperature(baseParams, {});
@@ -259,7 +264,8 @@ describe('Temperature Simulation', () => {
         U_L: 8,
         hydraulicHead: 5,
         pumpEfficiency: 0.7,
-        fixedTemp: null
+        fixedTemp: null,
+        density: 1000
       };
 
     const clearSkyResult = simulateTemperature(baseParams, {});
@@ -288,7 +294,8 @@ describe('Temperature Simulation', () => {
         U_L: 8,
         hydraulicHead: 5,
         pumpEfficiency: 0.7, // 70% converted to decimal
-        fixedTemp: null
+        fixedTemp: null,
+        density: 1000
       };
 
     const smallAreaResult = simulateTemperature(baseParams, {});
@@ -317,7 +324,8 @@ describe('Temperature Simulation', () => {
         U_L: 8,
         hydraulicHead: 5,
         pumpEfficiency: 0.7,
-        fixedTemp: null
+        fixedTemp: null,
+        density: 1000
       };
 
     const smallTankResult = simulateTemperature(baseParams, {});
@@ -346,7 +354,8 @@ describe('Temperature Simulation', () => {
         U_L: 8,
         hydraulicHead: 5,
         pumpEfficiency: 0.7,
-        fixedTemp: null
+        fixedTemp: null,
+        density: 1000
       };
 
     const noCloudChangeResult = simulateTemperature(baseParams, {});
@@ -387,7 +396,8 @@ describe('Temperature Simulation', () => {
         U_L: 8,
         hydraulicHead: 5,
         pumpEfficiency: 0.7,
-        fixedTemp: null
+        fixedTemp: null,
+        density: 1000
       };
 
     const smallCloudChangeInputs = {

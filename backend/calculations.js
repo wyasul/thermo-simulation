@@ -64,9 +64,9 @@ const getSolarIrradiance = (hour, cloudCover = 0) => {
  *   - F_R: The heat removal factor.
  *   - F_prime_prime: The collector flow factor.
  */
-const calculatePanelUsefulEnergyGain = (hour, area, efficiency, cloudCover, specificHeat, T_ambient, T_plate, transmittance, absorptance, U_L, pumpPower, hydraulicHead, pumpEfficiency,mass_flow_rate=null,testAmbient =null) => {
-    const density = 1000; // Density of water in kg/m³
+const calculatePanelUsefulEnergyGain = (hour, area, efficiency, cloudCover, specificHeat, T_ambient, T_plate, transmittance, absorptance, U_L, pumpPower, hydraulicHead, pumpEfficiency,density,mass_flow_rate=null,testAmbient =null) => {
     const gravity = 9.81; // Acceleration due to gravity in m/s²
+
 
     // Calculate mass flow rate
     const volumetricFlowRate = (pumpPower * pumpEfficiency) / (hydraulicHead * gravity * density); // m³/s
@@ -79,11 +79,9 @@ const calculatePanelUsefulEnergyGain = (hour, area, efficiency, cloudCover, spec
     const F_prime = efficiency; // Plate efficiency factor, user input
 
     let F_R, F_prime_prime;
-    if (testAmbient!==null){
+    if (testAmbient !== null) {
         T_ambient = testAmbient;
     }
-
-
 
     if (mass_flow_rate > 0) {
         // Capacitance rate calculated according to mC/A(U_L)F'
@@ -176,8 +174,7 @@ const calculateHeatTransferToFluid = (solarPanelVars, currentFluidTemp, U_L) => 
  * 
  * @returns {number} The new temperature of the tank after heat transfer in °C.
  */
-const calculateHeatTransferToTank = (fluidTemp, tankTemp, tankVolume, specificHeat, timeStep, pumpPower, hydraulicHead, pumpEfficiency) => {
-    const density = 1000; // Density of water in kg/m³ (approximately for water at room temperature)
+const calculateHeatTransferToTank = (fluidTemp, tankTemp, tankVolume, specificHeat, timeStep, pumpPower, hydraulicHead, pumpEfficiency,density) => {
     const gravity = 9.81; // Acceleration due to gravity in m/s²
 
     // Calculate the effective mass flow rate using pump power
@@ -204,25 +201,32 @@ const calculateHeatTransferToTank = (fluidTemp, tankTemp, tankVolume, specificHe
 /**
  * Simulates the temperature changes in a solar panel system over a specified duration.
  * 
- * @param {Object} params - Simulation parameters
- * @param {number} params.area - Solar panel area in m²
- * @param {number} params.efficiency - Solar panel efficiency (0-1)
- * @param {number} params.hour - Starting hour of simulation (0-23)
- * @param {number} params.duration - Simulation duration in hours
- * @param {number} params.timeStep - Time step for simulation in seconds
- * @param {number} params.minAmbientTemp - Minimum ambient temperature in °C
- * @param {number} params.maxAmbientTemp - Maximum ambient temperature in °C
- * @param {number} params.cloudCover - Cloud cover percentage (0-100)
- * @param {number} params.specificHeat - Specific heat of fluid in J/(kg·K)
- * @param {number} params.pumpPower - Pump power in Watts
- * @param {number} params.fluidTemp - Initial fluid temperature in °C
- * @param {number} params.transmittance - Cover plate transmittance
- * @param {number} params.absorptance - Plate absorptance
- * @param {number} params.tankVolume - Tank volume in m³
- * @param {number} params.tankTemp - Initial tank temperature in °C
- * @param {number} params.U_L - Overall heat loss coefficient in W/(m²·K)
- * @param {number} params.hydraulicHead - Hydraulic head in meters
- * @param {number} params.pumpEfficiency - Pump efficiency (0-1)
+ * @param {Object} initialParams - Initial simulation parameters
+ * @param {number} initialParams.area - Solar panel area in m²
+ * @param {number} initialParams.efficiency - Solar panel efficiency (0-1)
+ * @param {number} initialParams.hour - Starting hour of simulation (0-23)
+ * @param {number} initialParams.duration - Simulation duration in hours
+ * @param {number} initialParams.timeStep - Time step for simulation in seconds
+ * @param {number} initialParams.minAmbientTemp - Minimum ambient temperature in °C
+ * @param {number} initialParams.maxAmbientTemp - Maximum ambient temperature in °C
+ * @param {number} initialParams.cloudCover - Cloud cover percentage (0-100)
+ * @param {number} initialParams.specificHeat - Specific heat of fluid in J/(kg·K)
+ * @param {number} initialParams.pumpPower - Pump power in Watts
+ * @param {number} initialParams.fluidTemp - Initial fluid temperature in °C
+ * @param {number} initialParams.transmittance - Cover plate transmittance
+ * @param {number} initialParams.absorptance - Plate absorptance
+ * @param {number} initialParams.tankVolume - Tank volume in m³
+ * @param {number} initialParams.tankTemp - Initial tank temperature in °C
+ * @param {number} initialParams.U_L - Overall heat loss coefficient in W/(m²·K)
+ * @param {number} initialParams.hydraulicHead - Hydraulic head in meters
+ * @param {number} initialParams.pumpEfficiency - Pump efficiency (0-1)
+ * @param {Object} [initialParams.currentState] - Current state of the system (optional)
+ * @param {number} initialParams.currentState.fluidTemp - Current fluid temperature in °F
+ * @param {number} initialParams.currentState.panelTemp - Current panel temperature in °F
+ * @param {number} initialParams.currentState.tankTemp - Current tank temperature in °F
+ * @param {string|number|null} initialParams.fixedTemp - Fixed ambient temperature in °F, or 'None' if not fixed
+ * @param {Object} inputChanges - Object containing changes to parameters at specific time steps
+ * @param {number} [startStep=0] - Starting step for the simulation
  * 
  * @returns {Array<Object>} Array of hourly temperature data
  */
@@ -270,7 +274,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
             currentHour, currentParams.area, currentParams.efficiency, currentParams.cloudCover,
             currentParams.specificHeat, currentAmbientTemp, currentPlateTemp, currentParams.transmittance,
             currentParams.absorptance, currentParams.U_L, currentParams.pumpPower,
-            currentParams.hydraulicHead, currentParams.pumpEfficiency
+            currentParams.hydraulicHead, currentParams.pumpEfficiency, currentParams.density
         );
         
         let updatedTemps = calculateHeatTransferToFluid(solarPanelVars, currentFluidTemp, currentParams.U_L);
@@ -279,7 +283,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
 
         currentTankTemp = calculateHeatTransferToTank(
             currentFluidTemp, currentTankTemp, currentParams.tankVolume, currentParams.specificHeat,
-            currentParams.timeStep, currentParams.pumpPower, currentParams.hydraulicHead, currentParams.pumpEfficiency
+            currentParams.timeStep, currentParams.pumpPower, currentParams.hydraulicHead, currentParams.pumpEfficiency, currentParams.density
         );
 
         // Add the temperature data to the results

@@ -30,7 +30,8 @@ app.post('/simulate', (req, res) => {
         hydraulicHead: parseFloat(req.body.hydraulicHead) || 5,
         U_L: parseFloat(req.body.U_L) || 8,
         currentState: req.body.currentState || null,
-        fixedTemp: req.body.fixedTemp === 'None' ? null : fahrenheitToCelsius(parseFloat(req.body.fixedTemp))   
+        fixedTemp: req.body.fixedTemp === 'None' ? null : fahrenheitToCelsius(parseFloat(req.body.fixedTemp)),
+        density: parseFloat(req.body.density) || 1000
         };
 
     const inputChanges = req.body.inputChanges || {};

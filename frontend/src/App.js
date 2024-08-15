@@ -23,12 +23,13 @@ const initialInputs = {
     U_L: 8,
     duration: 24,
     fixedTemp: 'None',
+    density: 1000
 };
 
 const inputFields = {
     "Solar Panel": [
         {name: "area", label: "Panel Area (m²)"},
-        {name: "efficiency", label: "Panel Efficiency"},
+        {name: "efficiency", label: "Panel Efficiency (0-1)"},
         {name: "transmittance", label: "Glass Transmittance (0-1)"},
         {name: "absorptance", label: "Panel Absorptance (0-1)"},
         {name: "U_L", label: "Heat Loss Coefficient (W/m²·K)"}
@@ -38,11 +39,12 @@ const inputFields = {
         {name: "tankVolume", label: "Tank Volume (L)"},
         {name: "tankTemp", label: "Initial Tank Temp (°F)"},
         {name: "specificHeat", label: "Fluid Specific Heat (J/kg·K)"},
+        {name: "density", label: "Fluid Density (kg/m³)"},
         {name: "fluidTemp", label: "Initial Fluid Temp (°F)"}
     ],
     "Pump": [
         {name: "pumpPower", label: "Pump Power (W)"},
-        {name: "pumpEfficiency", label: "Pump Efficiency (0-100%)"},
+        {name: "pumpEfficiency", label: "Pump Efficiency (0-1)"},
         {name: "hydraulicHead", label: "Hydraulic Head (m)"}
     ],
     "Environment": [
@@ -56,7 +58,7 @@ const inputFields = {
     ]
 };
 
-const restrictedFields = ['fluidTemp', 'tankTemp', 'tankVolume', 'area', 'pumpPower', 'pumpEfficiency', 'hydraulicHead', 'duration'];
+const restrictedFields = ['fluidTemp', 'density', 'tankTemp', 'tankVolume', 'area', 'pumpPower', 'pumpEfficiency', 'hydraulicHead', 'duration'];
 
 function App() {
     const [inputs, setInputs] = useState(initialInputs);
@@ -67,7 +69,7 @@ function App() {
     const [changeLog, setChangeLog] = useState([]);
     const changeLogRef = useRef(null);
 
-    // Keep track of initial values
+    // Keeps track of initial values
     const initialValuesRef = useRef(initialInputs);
 
     useEffect(() => {
@@ -84,10 +86,9 @@ function App() {
     const handleInputChange = async (name, value) => {
         const newParams = { ...inputs, [name]: value};
         setInputs(newParams);
-
-
     };
 
+    // Handling when paramaters are changed in the before or during simulation
     const handleInputSubmit = (event, name) => {
         if (event.key === 'Enter' || event.type === 'blur') {
             const newValue = event.target.value === '' ? '' : parseFloat(event.target.value);
@@ -111,6 +112,7 @@ function App() {
                     tankTemp: inputs.tankTemp,
                     fluidTemp: inputs.fluidTemp
                 };
+
                 if (Object.values(updatedInputs).every(value => value !== '')) {
                     // Prepare the updated changes for the current hour
                     const updatedChanges = {
@@ -120,8 +122,6 @@ function App() {
                             [name]: newValue
                         }
                     };
-                    console.log(updatedInputs, updatedChanges)
-
 
                     // Run the simulation with updated inputs and changes
                     runSimulation(updatedInputs, updatedChanges, selectedHour);
@@ -149,6 +149,7 @@ function App() {
         }
     };
 
+    // Running the simulation, sending the params to the backend
     const runSimulation = async (params, changes, startHour = 0) => {
         const filteredParams = Object.fromEntries(
             Object.entries(params).filter(([_, value]) => value !== '')
@@ -177,20 +178,13 @@ function App() {
         }
     };
 
+    // Handling when the timeline slider is changed
     const handleTimelineChange = (event) => {
         const hour = parseInt(event.target.value);
         setSelectedHour(hour);
         
-        // Log the variables for the selected hour
-        // if (temperature[hour]) {
-        //     console.log(`Variables for hour ${hour}:`, {
-        //         panelTemp: temperature[hour].panelTemp,
-        //         tankTemp: temperature[hour].tankTemp,
-        //         fluidTemp: temperature[hour].fluidTemp,
-        //         ambientTemp: temperature[hour].ambientTemp
-        //     });
-        // }
     };
+
     const renderInputGroup = (title, fields) => (
         <div className="input-group">
             <h3>{title}</h3>
@@ -218,6 +212,7 @@ function App() {
         </div>
     );
 
+    // For color coding the solar diagram
     const calculateMinMaxTemps = () => {
         if (temperature.length === 0) return { panel: {}, tank: {}, fluid: {}, ambient: {} };
         
@@ -266,7 +261,7 @@ function App() {
 
     return (
         <div className="container">
-            <h1 className="title">Solar Thermal Energy Transfer Simulation</h1>
+            <h1 className="title">Solar Thermal Transfer Simulation</h1>
             {renderChangeLog()}
             <div className="compact-form">
                 {Object.entries(inputFields).map(([groupName, fields]) => (
