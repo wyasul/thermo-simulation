@@ -58,7 +58,7 @@ const getSolarIrradiance = (hour, cloudCover = 0) => {
  * @param {number} pumpPower - The power of the pump in Watts.
  * @param {number} hydraulicHead - The hydraulic head in meters, default is 5.
  * @param {number} pumpEfficiency - The pump efficiency (0-1)
- * 
+ * @param {number} density - The density of the fluid in kg/m³, default is 1000.
  * @returns {Object} An object containing:
  *   - q_u: The useful energy gain per unit area in MJ/(m²·h).
  *   - F_R: The heat removal factor.
@@ -171,6 +171,7 @@ const calculateHeatTransferToFluid = (solarPanelVars, currentFluidTemp, U_L) => 
  * @param {number} pumpPower - The power of the pump in Watts.
  * @param {number} hydraulicHead - The hydraulic head in meters, default is 5.
  * @param {number} pumpEfficiency - The efficiency of the pump (0-1)
+ * @param {number} density - The density of the fluid in kg/m³
  * 
  * @returns {number} The new temperature of the tank after heat transfer in °C.
  */
@@ -224,6 +225,7 @@ const calculateHeatTransferToTank = (fluidTemp, tankTemp, tankVolume, specificHe
  * @param {number} initialParams.currentState.fluidTemp - Current fluid temperature in °F
  * @param {number} initialParams.currentState.panelTemp - Current panel temperature in °F
  * @param {number} initialParams.currentState.tankTemp - Current tank temperature in °F
+ * @param {number} initialParams.density - The density of the fluid in kg/m³
  * @param {string|number|null} initialParams.fixedTemp - Fixed ambient temperature in °F, or 'None' if not fixed
  * @param {Object} inputChanges - Object containing changes to parameters at specific time steps
  * @param {number} [startStep=0] - Starting step for the simulation
@@ -270,6 +272,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
             currentAmbientTemp = tempMidpoint + tempAmplitude * Math.sin((currentHour - 6) * Math.PI / 12);
         }
 
+        // Calculate the useful energy gain of the solar panel
         const solarPanelVars = calculatePanelUsefulEnergyGain(
             currentHour, currentParams.area, currentParams.efficiency, currentParams.cloudCover,
             currentParams.specificHeat, currentAmbientTemp, currentPlateTemp, currentParams.transmittance,
@@ -277,6 +280,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
             currentParams.hydraulicHead, currentParams.pumpEfficiency, currentParams.density
         );
         
+        // Calculate the heat transfer to the fluid and the resulting temperatures in the solar panel
         let updatedTemps = calculateHeatTransferToFluid(solarPanelVars, currentFluidTemp, currentParams.U_L);
         currentFluidTemp = updatedTemps.T_fluid;
         currentPlateTemp = updatedTemps.T_plate;
