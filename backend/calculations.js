@@ -300,5 +300,6 @@ module.exports = {
     simulateTemperature,
     calculatePanelUsefulEnergyGain,
     calculateHeatTransferToFluid,
-    getSolarIrradiance
+    getSolarIrradiance,
+    calculateHeatTransferToTank
 };

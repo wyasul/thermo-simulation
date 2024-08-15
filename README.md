@@ -39,6 +39,17 @@ To run all tests:
     ```
     This will run backend tests. 
 
+    The tests are designed to thoroughly evaluate each thermodynamics function within the file calculations.js. There are 4 functions:
+    
+    1. `getSolarIrradiance`: Calculates the solar irradiance based on the time of day and cloud cover, using a simplified model involving a cosine wave with fixed sunrise and sunset times.
+    2. `calculatePanelUsefulEnergyGain`: Determines the useful energy gain of a solar panel using the Hottel-Whillier-Bliss equation, considering factors like solar irradiance, panel efficiency, and heat loss.
+    3. `calculateHeatTransferToFluid`: Computes the heat transfer to the fluid and the resulting temperatures in the solar panel.
+    4. `calculateHeatTransferToTank`: Calculates the heat transfer from the solar panel fluid to the storage tank and updates the tank temperature, considering pump power and fluid properties.
+    5. `simulateTemperature`: The main simulation function that uses the above functions to calculate temperature changes in a solar panel system over a specified duration, accounting for various input parameters and changes over time.
+
+    Each of these functions is tested with various input parameters. Some tests reproduce changes to the variables over time and compare simulation results. There are also a couple 
+    tests that reproduce situations found in the Beckham and Duffie textbook, acting as a sort of 'ground truth'.
+
 ## Project Structure
 
 - `backend/`: Contains the Express server and simulation logic
@@ -56,7 +67,7 @@ To run all tests:
 If you encounter any issues while setting up or running the application, please check the following:
 
 1. Ensure you have the correct versions of Node.js and npm installed.
-2. Make sure all dependencies are properly installed by running `npm install` in both the root directory and the `frontend/` directory.
+2. Make sure all dependencies are properly installed by running `npm install` in the root directory
 3. Check that ports 3000 and 3001 are not being used by other applications on your machine.
 
 If problems persist, please email wyattsullivan02@gmail.com, or text 307-699-2974.
