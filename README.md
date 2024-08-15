@@ -53,6 +53,7 @@ This project is a solar thermal energy transfer simulation with a React/HTML/CSS
 6. Reset or adjust:
    - Click "Reset" to start over with the default parameters.
    - Or continue modifying the ongoing simulation to explore different scenarios.
+   - By default, the simulation starts at midnight (hour 0). Changing the start hour has been disabled. To simulate a different start hour, you can tune parameters at hour 0 in such a way that an desired "starting state" is reached by the hour that you wish the simulation to begin with.
 
 ## Running the Tests
 
