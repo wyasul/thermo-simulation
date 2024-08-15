@@ -262,6 +262,7 @@ function App() {
     return (
         <div className="container">
             <h1 className="title">Solar Thermal Transfer Simulation</h1>
+
             {renderChangeLog()}
             <div className="compact-form">
                 {Object.entries(inputFields).map(([groupName, fields]) => (
@@ -349,6 +350,7 @@ function App() {
                     )}
                 </div>
             )}
+            <p className="simulation-note">Note: This simulation assumes perfect insulation of the tank.</p>
         </div>
     );
 }

@@ -31,6 +31,29 @@ This project is a solar thermal energy transfer simulation with a React/HTML/CSS
 
 2. Open your browser and navigate to http://localhost:3000 to view the application.
 
+## Running the Simulation
+
+1. After starting the application, navigate to http://localhost:3000 in your browser.
+
+2. View default simulation / reset initial parameters:
+   - The interface will show the simulation with default parameters. You can view the simulation in real time by dragging the sliding bar under 'Timeline View', or you can 
+   analyze the 'Table View' of the simulation, which will give an hour-by-hour breakdown in the changes of temperatures.
+   - If you desire, you can adjust input fields to configure the start state of the simulation (e.g., panel size, fluid properties, tank volume).
+   - For each paramater edit, click out of the box or press 'Enter' to save the paramater for the simulation, and the simulation will re-run
+
+3. Interact during simulation:
+   - You can drag the sliding bar to a specific hour, then modify parameters to your liking, such as cloud cover or maximum ambient temp, to simulate a dynamic real-world scenario.
+   - For example, you could start with default params, slide the bar to hour 12 (12pm), then change cloud cover from 0 to 40% to simulate a shift in weather. You could also shift the min or max temperatures, or even set your own fixed temperature and continue to change it hour by hour.
+   - In timeline view, changes to the parameters will display in the Change log at the top right, explaining what parameter changed, and when it changed. In table view, the details of your changes will appear in the rows corresponding to when the change was made.
+
+5. Analyze results:
+   - Use the timeline view diagram to examine temperature trends over time
+   - Alternatively, you can view a breakdown of changes in temperature of all components within table view.
+
+6. Reset or adjust:
+   - Click "Reset" to start over with the default parameters.
+   - Or continue modifying the ongoing simulation to explore different scenarios.
+
 ## Running the Tests
 
 To run all tests:
@@ -47,8 +70,7 @@ The tests are designed to thoroughly evaluate each thermodynamics function withi
 4. `calculateHeatTransferToTank`: Calculates the heat transfer from the solar panel fluid to the storage tank and updates the tank temperature, considering pump power and fluid properties.
 5. `simulateTemperature`: The main simulation function that uses the above functions to calculate temperature changes in a solar panel system over a specified duration, accounting for various input parameters and changes over time.
 
-Each of these functions is tested with various input parameters. Some tests reproduce changes to the variables over time and compare simulation results. There are also a couple 
-tests that reproduce situations found in the Beckham and Duffie textbook, acting as a sort of 'ground truth'.
+Each of these functions is tested with various input parameters. Most tests ensure that each function does what it is intended to do in static state. Some tests reproduce changes to the variables over time and compare simulation results. There are also a couple tests that reproduce situations found in the Beckham and Duffie textbook, acting as a sort of 'ground truth'.
 
 ## Project Structure
 
