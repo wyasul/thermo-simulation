@@ -119,12 +119,22 @@ input[type="number"] {
 .timeline-slider {
     width: 100%;
     margin-bottom: 20px;
+    color: #ff9100;
+    
 }
+
+.hour-display {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+    
+  }
 
 .temperature-display {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 21px;
 }
 
 .temp-item {

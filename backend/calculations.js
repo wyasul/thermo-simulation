@@ -82,23 +82,7 @@ const calculatePanelUsefulEnergyGain = (hour, area, efficiency, cloudCover, spec
     if (testAmbient!==null){
         T_ambient = testAmbient;
     }
-    // Log all parameters
-    console.log('Calculation parameters:');
-    console.log('Hour:', hour);
-    console.log('Area:', area);
-    console.log('Efficiency:', efficiency);
-    console.log('Cloud Cover:', cloudCover);
-    console.log('Specific Heat:', specificHeat);
-    console.log('Ambient Temperature:', T_ambient);
-    console.log('Plate Temperature:', T_plate);
-    console.log('Transmittance:', transmittance);
-    console.log('Absorptance:', absorptance);
-    console.log('Heat Loss Coefficient (U_L):', U_L);
-    console.log('Pump Power:', pumpPower);
-    console.log('Hydraulic Head:', hydraulicHead);
-    console.log('Pump Efficiency:', pumpEfficiency);
-    console.log('Mass Flow Rate:', mass_flow_rate);
-    console.log('Test Ambient Temperature:', testAmbient);
+
 
 
     if (mass_flow_rate > 0) {
@@ -121,7 +105,6 @@ const calculatePanelUsefulEnergyGain = (hour, area, efficiency, cloudCover, spec
 
     // Average loss rate in MJ/(m²·h).
     const U_L_Temp_Quotient = U_L * (T_plate - T_ambient) * 3600 / 1000000
-    console.log(U_L_Temp_Quotient)
 
     // Useful energy gain in MJ/(m²·h).
     const Q_u = F_R * area * ((solarIrradiance*transmittance*absorptance) - U_L_Temp_Quotient);

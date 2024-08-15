@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import SolarDiagram from './SolarDiagram';
 
-// Define initial state outside the component
+// Initial default params
 const initialInputs = {
     area: 2.0,
     efficiency: 0.87,
@@ -53,6 +53,8 @@ const inputFields = {
         {name: "duration", label: "Duration (hours)"}
     ]
 };
+
+const restrictedFields = ['fluidTemp', 'tankTemp', 'tankVolume', 'area', 'pumpPower', 'pumpEfficiency', 'hydraulicHead', 'duration'];
 
 function App() {
     const [inputs, setInputs] = useState(initialInputs);
@@ -209,7 +211,7 @@ function App() {
                                 onChange={(e) => handleInputChange(field.name, e.target.value)}
                                 onKeyDown={(e) => handleInputSubmit(e, field.name)}
                                 onBlur={(e) => handleInputSubmit(e, field.name)}
-
+                                disabled={selectedHour > 0 && restrictedFields.includes(field.name)}
                             />
                         </div>
                     </div>
@@ -273,7 +275,7 @@ function App() {
                     renderInputGroup(groupName, fields)
                 ))}
             </div>
-            <p className="input-note">Changes will affect the simulation from hour {selectedHour} onwards</p>
+            <p className="input-note">**Changes made to inputs will affect the simulation from hour {selectedHour} onwards</p>
             <button className="reset-button" onClick={handleResetSimulation}>Reset Simulation</button>
 
             {temperature.length > 0 && (
@@ -303,13 +305,14 @@ function App() {
                                 onChange={handleTimelineChange}
                                 className="timeline-slider"
                             />
-                            <p>Hour: {selectedHour}</p>
+                            <p className="hour-display">Hour {selectedHour}</p>
                             <SolarDiagram
                                 panelTemp={temperature[selectedHour]?.panelTemp}
                                 tankTemp={temperature[selectedHour]?.tankTemp}
                                 fluidTemp={temperature[selectedHour]?.fluidTemp}
                                 ambientTemp={temperature[selectedHour]?.ambientTemp}
                                 minMaxTemps={calculateMinMaxTemps()}
+                                hour={(initialInputs.hour + selectedHour) % 24}
                             />
                         </div>
                     ) : (
