@@ -182,7 +182,11 @@ tr:nth-child(even) {
 .input-group h3 {
     margin: 0 0 10px 0;
     font-size: 1rem;
-    color: #333;
+    color: #191818;
+    background-color: #ffab40;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
 }
 
 .input-grid {

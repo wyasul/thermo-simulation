@@ -29,8 +29,10 @@ const inputFields = {
     "Solar Panel": [
         {name: "area", label: "Panel Area (m²)"},
         {name: "efficiency", label: "Panel Efficiency"},
-        {name: "transmittance", label: "Glass Transmittance"},
-        {name: "absorptance", label: "Absorber Absorptance"}
+        {name: "transmittance", label: "Glass Transmittance (0-1)"},
+        {name: "absorptance", label: "Panel Absorptance (0-1)"},
+        {name: "U_L", label: "Heat Loss Coefficient (W/m²·K)"}
+
     ],
     "Tank & Fluid": [
         {name: "tankVolume", label: "Tank Volume (L)"},
@@ -48,7 +50,6 @@ const inputFields = {
         {name: "maxAmbientTemp", label: "Max Ambient Temp (°F)"},
         {name: "fixedTemp", label: "Fixed Temp (°F, or 'None')"},
         {name: "cloudCover", label: "Cloud Cover (0-100%)"},
-        {name: "U_L", label: "Heat Loss Coefficient (W/m²·K)"}
     ],
     "Simulation": [
         {name: "duration", label: "Duration (hours)"}

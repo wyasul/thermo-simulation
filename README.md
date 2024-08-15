@@ -1,21 +1,20 @@
 # thermo-simulation
 
-This project is a solar thermal energy transfer simulation with a React frontend and Express backend.
+This project is a solar thermal energy transfer simulation with a React frontend and Node.js/Express backend. This software runs locally, and is intended to simulate a solar collector connected to a water tank by pipes powered by a pump. The simulation allows many different configurations, giving the user freedom to tamper with the secific heat capacity of the fluid, solar panel efficiency and size, cloud cover, ambient temperatures, starting temperatures of the tank and fluid, etc. The user can either set these parameters at the beginning of the simulation or  change them as time goes on throughout the simulation, allowing for dynamic analysis. 
 
 ## Prerequisites
 
 - Node.js (v14 or later)
 - npm (usually comes with Node.js)
 
-## Setup Instructions
+## Getting Started
 
 1. Clone or download the repository:
    ```
    git clone https://github.com/wyasul/thermo-simulation.git
    cd thermo-simulation
-
-   or download at: https://github.com/wyasul/thermo-simulation
    ```
+   or download at: https://github.com/wyasul/thermo-simulation
 
 2. Install dependencies for the backend and frontend (make sure you're in root directory):
    ```
@@ -32,13 +31,13 @@ This project is a solar thermal energy transfer simulation with a React frontend
 
 2. Open your browser and navigate to http://localhost:3000 to view the application.
 
-## Running Tests
+## Running the Tests
 
 To run all tests:
     ```
     npm test
     ```
-    This will run both backend and frontend tests.
+    This will run backend tests. 
 
 ## Project Structure
 
@@ -60,12 +59,8 @@ If you encounter any issues while setting up or running the application, please 
 2. Make sure all dependencies are properly installed by running `npm install` in both the root directory and the `frontend/` directory.
 3. Check that ports 3000 and 3001 are not being used by other applications on your machine.
 
-If problems persist, please open an issue in the GitHub repository with a detailed description of the error and the steps to reproduce it.
+If problems persist, please email wyattsullivan02@gmail.com, or text 307-699-2974.
 
-## Contributing
+## Acknowlegements
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the ISC License.
+* The logic behind the thermodynamics code is drawn from Beckham & Duffie's "Solar Engineering of Thermal Processes" textbook. All thermal equations used can be found in Chapter 6, particularly sections 6.7 and 6.9
