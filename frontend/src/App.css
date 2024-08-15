@@ -96,7 +96,7 @@ input[type="number"] {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     position: relative;
-    padding-bottom: 40px; /* Add space for the start note */
+    padding-bottom: 40px;
 }
 
 .results h2 {
@@ -104,7 +104,7 @@ input[type="number"] {
 }
 
 .start-note-container {
-    height: 24px; /* Adjust this value as needed */
+    height: 24px;
     margin-bottom: 15px;
 }
 
@@ -112,7 +112,7 @@ input[type="number"] {
     color: #666;
     font-style: italic;
     margin: 0;
-    line-height: 24px; /* Should match the container height */
+    line-height: 24px;
 }
 
 .start-note-placeholder {
