@@ -277,6 +277,13 @@ function App() {
             {temperature.length > 0 && (
                 <div className="results">
                     <h2>Simulation Results</h2>
+                    <div className="start-note-container">
+                        {selectedHour === 0 ? (
+                            <p className="start-note">Drag the slider to start the simulation</p>
+                        ) : (
+                            <div className="start-note-placeholder"></div>
+                        )}
+                    </div>
                     <div className="view-toggle">
                         <button 
                             className={viewMode === 'timeline' ? 'active' : ''}
@@ -335,7 +342,7 @@ function App() {
                                             <td>
                                                 {changeLog
                                                     .filter(log => {
-                                                        const logHour = parseInt(log.split('at hour ')[1]);
+                                                        const logHour = parseInt(log.split(' at hour ')[1]);
                                                         return logHour === index && logHour <= selectedHour;
                                                     })
                                                     .map((log, logIndex) => {

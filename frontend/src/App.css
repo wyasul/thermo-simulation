@@ -16,6 +16,7 @@ body {
     padding: 20px;
 }
 
+
 .title {
     text-align: center;
     color: #333;
@@ -94,6 +95,28 @@ input[type="number"] {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    position: relative;
+    padding-bottom: 40px; /* Add space for the start note */
+}
+
+.results h2 {
+    margin-bottom: 0;
+}
+
+.start-note-container {
+    height: 24px; /* Adjust this value as needed */
+    margin-bottom: 15px;
+}
+
+.start-note {
+    color: #666;
+    font-style: italic;
+    margin: 0;
+    line-height: 24px; /* Should match the container height */
+}
+
+.start-note-placeholder {
+    height: 100%;
 }
 
 .view-toggle {
@@ -116,20 +139,25 @@ input[type="number"] {
     color: #ffffff;
 }
 
+.timeline-container {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
 .timeline-slider {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #ff9100;
-    
 }
 
 .hour-display {
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 18px;
     color: #333;
-    
-  }
+}
 
 .temperature-display {
     display: grid;
@@ -302,4 +330,10 @@ input.submitted {
 input.editing {
     border-color: #ff9100;
     box-shadow: 0 0 5px rgba(255, 145, 0, 0.5);
+}
+
+.start-note {
+    color: #666;
+    font-style: italic;
+    margin-top: 10px;
 }
