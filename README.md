@@ -1,6 +1,6 @@
 # thermo-simulation
 
-This project is a solar thermal energy transfer simulation with a React/HTML/CSS frontend and Node.js/Express backend. This software runs locally, and is intended to simulate a solar collector connected to a water tank by pipes powered by a pump. The simulation allows many different configurations, giving the user freedom to tamper with parameters such as the specific heat capacity of the fluid, solar panel efficiency and size, cloud cover, ambient temperatures, starting temperatures of the tank and fluid, etc. The user set these parameters at the beginning of the simulation and/or change them as time goes on throughout the simulation, allowing for dynamic analysis. 
+Authored by Wyatt Sullivan for an interview, this project is a solar thermal energy transfer simulation with a React/HTML/CSS frontend and Node.js/Express backend. This software runs locally, and is intended to simulate a solar collector connected to a water tank by pipes powered by a pump. The simulation allows many different configurations, giving the user freedom to tamper with parameters such as the specific heat capacity of the fluid, solar panel efficiency and size, cloud cover, ambient temperatures, starting temperatures of the tank and fluid, etc. The user set these parameters at the beginning of the simulation and/or change them as time goes on throughout the simulation, allowing for dynamic analysis. 
 
 ## Prerequisites
 
