@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { simulateTemperature } = require('./calculations');
-const { fahrenheitToCelsius, celsiusToFahrenheit } = require('./utils');  // Import the utility functions
+const { fahrenheitToCelsius, celsiusToFahrenheit } = require('./utils');
 
 const app = express();
 const PORT = 3001;
@@ -37,7 +37,7 @@ app.post('/simulate', (req, res) => {
     const inputChanges = req.body.inputChanges || {};
     const startStep = req.body.startHour || 0;
 
-    // Convert input changes temperatures to Celsius
+    // Convert input changes temperatures to Celsius for processing
     for (const hour in inputChanges) {
         if (inputChanges[hour].minAmbientTemp) {
             inputChanges[hour].minAmbientTemp = fahrenheitToCelsius(inputChanges[hour].minAmbientTemp);

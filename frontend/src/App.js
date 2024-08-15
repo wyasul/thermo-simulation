@@ -169,6 +169,8 @@ function App() {
                 })
             });
             const data = await response.json();
+
+            // Update the temperature array with the new simulation results
             setTemperature(prevTemperature => {
                 const newTemperature = [...prevTemperature.slice(0, startHour), ...data.temperatures];
                 return newTemperature;
@@ -350,7 +352,6 @@ function App() {
                     )}
                 </div>
             )}
-            <p className="simulation-note">Note: This simulation assumes perfect insulation of the tank.</p>
         </div>
     );
 }

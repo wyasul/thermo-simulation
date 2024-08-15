@@ -5,7 +5,10 @@ Authored by Wyatt Sullivan for an interview, this project is a solar thermal ene
 ## Prerequisites
 
 - Node.js (v14 or later)
-- npm (usually comes with Node.js)
+- npm (usually comes with Node.js), for installing dependencies
+- Git (optional, for cloning the repository)
+- A modern web browser (e.g., Chrome, Firefox, Safari)
+- Ports 3000 and 3001 available on your machine
 
 ## Getting Started
 
