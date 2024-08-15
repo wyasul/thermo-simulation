@@ -1,6 +1,6 @@
 # thermo-simulation
 
-This project is a solar thermal energy transfer simulation with a React frontend and Node.js/Express backend. This software runs locally, and is intended to simulate a solar collector connected to a water tank by pipes powered by a pump. The simulation allows many different configurations, giving the user freedom to tamper with the secific heat capacity of the fluid, solar panel efficiency and size, cloud cover, ambient temperatures, starting temperatures of the tank and fluid, etc. The user can either set these parameters at the beginning of the simulation or  change them as time goes on throughout the simulation, allowing for dynamic analysis. 
+This project is a solar thermal energy transfer simulation with a React frontend and Node.js/Express backend. This software runs locally, and is intended to simulate a solar collector connected to a water tank by pipes powered by a pump. The simulation allows many different configurations, giving the user freedom to tamper with parameters such as the specific heat capacity of the fluid, solar panel efficiency and size, cloud cover, ambient temperatures, starting temperatures of the tank and fluid, etc. The user set these parameters at the beginning of the simulation and/or change them as time goes on throughout the simulation, allowing for dynamic analysis. 
 
 ## Prerequisites
 
@@ -34,21 +34,21 @@ This project is a solar thermal energy transfer simulation with a React frontend
 ## Running the Tests
 
 To run all tests:
-    ```
-    npm test
-    ```
-    This will run backend tests. 
+```
+npm test
+```
+This will run backend tests. 
 
-    The tests are designed to thoroughly evaluate each thermodynamics function within the file calculations.js. There are 4 functions:
-    
-    1. `getSolarIrradiance`: Calculates the solar irradiance based on the time of day and cloud cover, using a simplified model involving a cosine wave with fixed sunrise and sunset times.
-    2. `calculatePanelUsefulEnergyGain`: Determines the useful energy gain of a solar panel using the Hottel-Whillier-Bliss equation, considering factors like solar irradiance, panel efficiency, and heat loss.
-    3. `calculateHeatTransferToFluid`: Computes the heat transfer to the fluid and the resulting temperatures in the solar panel.
-    4. `calculateHeatTransferToTank`: Calculates the heat transfer from the solar panel fluid to the storage tank and updates the tank temperature, considering pump power and fluid properties.
-    5. `simulateTemperature`: The main simulation function that uses the above functions to calculate temperature changes in a solar panel system over a specified duration, accounting for various input parameters and changes over time.
+The tests are designed to thoroughly evaluate each thermodynamics function within the file calculations.js. There are 5 functions:
 
-    Each of these functions is tested with various input parameters. Some tests reproduce changes to the variables over time and compare simulation results. There are also a couple 
-    tests that reproduce situations found in the Beckham and Duffie textbook, acting as a sort of 'ground truth'.
+1. `getSolarIrradiance`: Calculates the solar irradiance based on the time of day and cloud cover, using a simplified model involving a cosine wave with fixed sunrise and sunset times.
+2. `calculatePanelUsefulEnergyGain`: Determines the useful energy gain of a solar panel using the Hottel-Whillier-Bliss equation, considering factors like solar irradiance, panel efficiency, and heat loss.
+3. `calculateHeatTransferToFluid`: Computes the heat transfer to the fluid and the resulting temperatures in the solar panel.
+4. `calculateHeatTransferToTank`: Calculates the heat transfer from the solar panel fluid to the storage tank and updates the tank temperature, considering pump power and fluid properties.
+5. `simulateTemperature`: The main simulation function that uses the above functions to calculate temperature changes in a solar panel system over a specified duration, accounting for various input parameters and changes over time.
+
+Each of these functions is tested with various input parameters. Some tests reproduce changes to the variables over time and compare simulation results. There are also a couple 
+tests that reproduce situations found in the Beckham and Duffie textbook, acting as a sort of 'ground truth'.
 
 ## Project Structure
 
