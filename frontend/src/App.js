@@ -139,7 +139,7 @@ function App() {
                 // Add to change log with the label instead of the name
                 setChangeLog(prevLog => [
                     ...prevLog,
-                    `${label} changed from ${initialValue} to ${newValue} during hour ${selectedHour}`
+                    `${label} changed from ${initialValue} to ${newValue} at the end of hour ${selectedHour}`
                 ]);
 
                 // Check if all input values are valid (not empty)
@@ -366,7 +366,7 @@ function App() {
                                         <th>Tank Temp (°F)</th>
                                         <th>Fluid Temp (°F)</th>
                                         <th>Ambient Temp (°F)</th>
-                                        <th>Changes</th>
+                                        <th>Changes (by the end of hour)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -380,11 +380,11 @@ function App() {
                                             <td>
                                                 {changeLog
                                                     .filter(log => {
-                                                        const logHour = parseInt(log.split(' during hour ')[1]);
+                                                        const logHour = parseInt(log.split(' at the end of hour ')[1]);
                                                         return logHour === index && logHour <= selectedHour;
                                                     })
                                                     .map((log, logIndex) => {
-                                                        const varChanged = log.split(' during hour')[0];
+                                                        const varChanged = log.split(' at the end of hour')[0];
                                                         return <div key={logIndex}>{varChanged}</div>;
                                                     })
                                                 }
