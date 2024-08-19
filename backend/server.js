@@ -4,29 +4,32 @@ const { simulateTemperature } = require('./calculations');
 const { fahrenheitToCelsius, celsiusToFahrenheit } = require('./utils');
 
 const app = express();
+
+// Backend server port
 const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
 
+// Endpoint for running the simulation
 app.post('/simulate', (req, res) => {
     const initialParams = {
-        area: parseFloat(req.body.area) || 2.0,
-        efficiency: parseFloat(req.body.efficiency) || 0.15,
+        area: req.body.area !== undefined ? parseFloat(req.body.area) : 2.0,
+        efficiency: req.body.efficiency !== undefined ? parseFloat(req.body.efficiency) : 0.15,
         pumpPower: req.body.pumpPower !== undefined ? parseFloat(req.body.pumpPower) : 50,
         hour: req.body.hour !== undefined ? parseFloat(req.body.hour) : 0,
         duration: parseFloat(req.body.duration) || 24,
         timeStep: 3600,
-        minAmbientTemp: fahrenheitToCelsius(parseFloat(req.body.minAmbientTemp) || 60),
-        maxAmbientTemp: fahrenheitToCelsius(parseFloat(req.body.maxAmbientTemp) || 80),
-        cloudCover: parseFloat(req.body.cloudCover) || 0,
-        specificHeat: parseFloat(req.body.specificHeat) || 4186,
-        fluidTemp: fahrenheitToCelsius(parseFloat(req.body.fluidTemp)) || 68,
-        transmittance: parseFloat(req.body.transmittance) || 0.9,
-        absorptance: parseFloat(req.body.absorptance) || 0.95,
+        minAmbientTemp: req.body.minAmbientTemp !== null ? fahrenheitToCelsius(parseFloat(req.body.minAmbientTemp)) : 10,
+        maxAmbientTemp: req.body.maxAmbientTemp !== null ? fahrenheitToCelsius(parseFloat(req.body.maxAmbientTemp)) : 20,
+        cloudCover: req.body.cloudCover !== null ? parseFloat(req.body.cloudCover) : 0,
+        specificHeat: req.body.specificHeat !== undefined ? parseFloat(req.body.specificHeat) : 4186,
+        fluidTemp: req.body.fluidTemp !== undefined ? fahrenheitToCelsius(parseFloat(req.body.fluidTemp)) : 20,
+        transmittance: req.body.transmittance !== undefined ? parseFloat(req.body.transmittance) : 0.9,
+        absorptance: req.body.absorptance !== undefined ? parseFloat(req.body.absorptance) : 0.95,
         tankVolume: parseFloat(req.body.tankVolume) || 1000,
-        tankTemp: fahrenheitToCelsius(parseFloat(req.body.tankTemp)) || 68,
-        pumpEfficiency: parseFloat(req.body.pumpEfficiency)/100 || 0.7,
+        tankTemp: req.body.tankTemp !== null ? fahrenheitToCelsius(parseFloat(req.body.tankTemp)) : 20,
+        pumpEfficiency: req.body.pumpEfficiency !== undefined ? parseFloat(req.body.pumpEfficiency) : 0.7,
         hydraulicHead: parseFloat(req.body.hydraulicHead) || 5,
         U_L: parseFloat(req.body.U_L) || 8,
         currentState: req.body.currentState || null,
@@ -53,6 +56,7 @@ app.post('/simulate', (req, res) => {
         }
     }
 
+    // Temperatures from the simulation are converted to Fahrenheit
     const temperatures = simulateTemperature(initialParams, inputChanges, startStep).map(temp => ({
         time: temp.time,
         fluidTemp: celsiusToFahrenheit(temp.fluidTemp),

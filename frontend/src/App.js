@@ -18,7 +18,7 @@ const initialInputs = {
     absorptance: 0.95,
     tankVolume: 1000,
     tankTemp: 68,
-    pumpEfficiency: 70,
+    pumpEfficiency: 0.7,
     hydraulicHead: 5,
     U_L: 8,
     duration: 24,
@@ -109,10 +109,38 @@ function App() {
                 } else if (name.includes('Temp')) {
                     // Negatives are allowed. Disallowing values over 100,000
                     parsedValue = Math.min(100000, parsedValue);
-                } else {
+                } else if (name === 'area') {
+                    // Area can't be 0
+                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
+                } else if (name === 'duration') {
+                    // Duration can't be 0
+                    parsedValue = Math.max(1, Math.min(100000, parsedValue));
+
+                } else if (name === 'U_L') {
+                    // Heat loss coefficient can't be 0
+                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
+                } else if (name === 'hydraulicHead') {
+                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
+                }
+                else if (name === 'density') {
+                    // Density can't be 0
+                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
+                }
+                else if (name === 'specificHeat') {
+                    // Specific heat can't be 0
+                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
+                }
+                else if (name === 'tankVolume') {
+                    // Tank volume can't be 0
+                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
+                }
+
+
+                else {
                     // For all other numeric fields
                     parsedValue = Math.max(0, Math.min(100000, parsedValue));
                 }
+
             }
         }
 
@@ -139,7 +167,7 @@ function App() {
                 // Add to change log with the label instead of the name
                 setChangeLog(prevLog => [
                     ...prevLog,
-                    `${label} changed from ${initialValue} to ${newValue} at the end of hour ${selectedHour}`
+                    `${label} changed from ${initialValue} to ${newValue} at the start of hour ${selectedHour}`
                 ]);
 
                 // Check if all input values are valid (not empty)
@@ -161,7 +189,7 @@ function App() {
                     };
 
                     // Run the simulation with updated inputs and changes
-                    runSimulation(updatedInputs, updatedChanges, selectedHour+1);
+                    runSimulation(updatedInputs, updatedChanges, selectedHour);
                 }
 
                 // Update the initial value for this input
@@ -353,7 +381,6 @@ function App() {
                                 ambientTemp={temperature[selectedHour]?.ambientTemp}
                                 minMaxTemps={calculateMinMaxTemps()}
                                 hour={(initialInputs.hour + selectedHour) % 24}
-                                cloudCover={inputs.cloudCover}
                             />
                         </div>
                     ) : (
@@ -366,7 +393,7 @@ function App() {
                                         <th>Tank Temp (°F)</th>
                                         <th>Fluid Temp (°F)</th>
                                         <th>Ambient Temp (°F)</th>
-                                        <th>Changes (by the end of hour)</th>
+                                        <th>Changes (at start of hour)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -380,11 +407,11 @@ function App() {
                                             <td>
                                                 {changeLog
                                                     .filter(log => {
-                                                        const logHour = parseInt(log.split(' at the end of hour ')[1]);
+                                                        const logHour = parseInt(log.split(' at the start of hour')[1]);
                                                         return logHour === index && logHour <= selectedHour;
                                                     })
                                                     .map((log, logIndex) => {
-                                                        const varChanged = log.split(' at the end of hour')[0];
+                                                        const varChanged = log.split(' at the start of hour')[0];
                                                         return <div key={logIndex}>{varChanged}</div>;
                                                     })
                                                 }
