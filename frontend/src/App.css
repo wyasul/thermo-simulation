@@ -337,3 +337,10 @@ input.editing {
     font-style: italic;
     margin-top: 10px;
 }
+
+.subtext {
+    color: #666;
+    font-style: italic;
+    font-size: 0.7em;
+    margin-top: 0;
+}

@@ -37,7 +37,7 @@ const inputFields = {
     ],
     "Tank & Fluid": [
         {name: "tankVolume", label: "Tank Volume (L)"},
-        {name: "tankTemp", label: "Initial Tank Temp (°F)"},
+        {name: "tankTemp", label: "Initial Tank Water Temp (°F)"},
         {name: "specificHeat", label: "Fluid Specific Heat (J/kg·K)"},
         {name: "density", label: "Fluid Density (kg/m³)"},
         {name: "fluidTemp", label: "Initial Fluid Temp (°F)"}
@@ -101,8 +101,8 @@ function App() {
                     'transmittance': [0, 1],
                     'absorptance': [0, 1],
                     'cloudCover': [0, 100],
-                    'tankTemp': [-100000, 100000],
-                    'fluidTemp': [-100000, 100000],
+                    'tankTemp': [32, 100000],
+                    'fluidTemp': [32, 100000],
                     'area': [0.000001, 100000],
                     'duration': [1, 100000],
                     'U_L': [0.000001, 100000],
@@ -114,11 +114,7 @@ function App() {
 
                 for (const [key, [min, max]] of Object.entries(limits)) {
                     if (name.includes(key) || name === key) {
-                        if (key === 'tankTemp' || key === 'fluidTemp') {
-                            parsedValue = parsedValue === 0 ? min : Math.max(min, Math.min(max, parsedValue));
-                        } else {
-                            parsedValue = Math.max(min, Math.min(max, parsedValue));
-                        }
+                        parsedValue = Math.max(min, Math.min(max, parsedValue));
                         break;
                     }
                 }
@@ -354,6 +350,8 @@ function App() {
                                 className="timeline-slider"
                             />
                             <p className="hour-display">Hour {selectedHour}</p>
+                            <p className="subtext">(Graphics represent the state of the system at the end of the hour)</p>
+
                             <SolarDiagram
                                 panelTemp={temperature[selectedHour]?.panelTemp}
                                 tankTemp={(temperature[selectedHour]?.tankTemp)}

@@ -246,6 +246,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
         currentTankTemp = fahrenheitToCelsius(initialParams.currentState.tankTemp);
     }
 
+    // Run through each step of the simulation
     for (let step = startStep; step < initialParams.duration; step++) {
         // Apply any input changes for this hour
         if (inputChanges[step]) {
@@ -279,6 +280,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
             currentParams.absorptance, currentParams.U_L, currentParams.pumpPower,
             currentParams.hydraulicHead, currentParams.pumpEfficiency, currentParams.density
         );
+
         
         // Calculate the heat transfer to the fluid and the resulting temperatures in the solar panel
         let updatedTemps = calculateHeatTransferToFluid(solarPanelVars, currentFluidTemp, currentParams.U_L);
@@ -289,6 +291,7 @@ const simulateTemperature = (initialParams, inputChanges, startStep = 0) => {
             currentFluidTemp, currentTankTemp, currentParams.tankVolume, currentParams.specificHeat,
             currentParams.timeStep, currentParams.pumpPower, currentParams.hydraulicHead, currentParams.pumpEfficiency, currentParams.density
         );
+        // console.log(temperatures)
 
         // Add the temperature data to the results
         temperatures.push({
