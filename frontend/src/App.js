@@ -58,7 +58,7 @@ const inputFields = {
     ]
 };
 
-const restrictedFields = ['fluidTemp', 'density', 'tankTemp', 'tankVolume', 'area', 'pumpPower', 'pumpEfficiency', 'hydraulicHead', 'duration'];
+const restrictedFields = ['fluidTemp', 'density', 'tankTemp', 'tankVolume', 'area', 'duration'];
 
 function App() {
     const [inputs, setInputs] = useState(initialInputs);
@@ -84,7 +84,34 @@ function App() {
     }, [changeLog]);
 
     const handleInputChange = async (name, value) => {
-        const newParams = { ...inputs, [name]: value};
+        let parsedValue = parseFloat(value);
+        const field = Object.values(inputFields).flat().find(f => f.name === name);
+        
+        if (isNaN(parsedValue)) {
+            // If the value is NaN, keep it as is
+            parsedValue = value;
+        } else {
+            // Applying value limits
+            if (name.includes('Efficiency') || name === 'transmittance' || name === 'absorptance') {
+                if (!isNaN(parsedValue)) {
+                    if (value === '0.' || (parsedValue >= 0 && parsedValue <= 1)) {
+                        parsedValue = value;
+                    } else {
+                        parsedValue = Math.max(0, Math.min(1, parsedValue));
+                    }
+                }
+            } else if (name === 'cloudCover') {
+                parsedValue = Math.max(0, Math.min(100, parsedValue));
+            } else if (name.includes('Temp')) {
+                // Negatives are allowed. Disallowing values over 100,000
+                parsedValue = Math.min(100000, parsedValue);
+            } else {
+                // For all other numeric fields
+                parsedValue = Math.max(0, Math.min(100000, parsedValue));
+            }
+        }
+
+        const newParams = { ...inputs, [name]: parsedValue };
         setInputs(newParams);
     };
 
