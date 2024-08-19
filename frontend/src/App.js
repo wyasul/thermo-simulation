@@ -350,7 +350,6 @@ function App() {
                                 className="timeline-slider"
                             />
                             <p className="hour-display">Hour {selectedHour}</p>
-                            <p className="subtext">(Graphics represent the state of the system at the end of the hour)</p>
 
                             <SolarDiagram
                                 panelTemp={temperature[selectedHour]?.panelTemp}
@@ -360,6 +359,8 @@ function App() {
                                 minMaxTemps={calculateMinMaxTemps()}
                                 hour={(initialInputs.hour + selectedHour) % 24}
                             />
+                            <p className="subtext">**Graphics represent the state of the system at the end of the hour</p>
+
                         </div>
                     ) : (
                         <div className="table-view">
