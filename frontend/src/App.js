@@ -161,7 +161,7 @@ function App() {
                     };
 
                     // Run the simulation with updated inputs and changes
-                    runSimulation(updatedInputs, updatedChanges, selectedHour);
+                    runSimulation(updatedInputs, updatedChanges, selectedHour+1);
                 }
 
                 // Update the initial value for this input
@@ -308,7 +308,7 @@ function App() {
                     renderInputGroup(groupName, fields)
                 ))}
             </div>
-            <p className="input-note">**Changes made to inputs will affect the simulation from hour {selectedHour} onwards</p>
+            <p className="input-note">**Changes made to inputs will affect the simulation past hour {selectedHour} </p>
             <button className="reset-button" onClick={handleResetSimulation}>Reset Simulation</button>
 
             {temperature.length > 0 && (
