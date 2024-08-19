@@ -48,8 +48,8 @@ const inputFields = {
         {name: "hydraulicHead", label: "Hydraulic Head (m)"}
     ],
     "Environment": [
-        {name: "minAmbientTemp", label: "Min Ambient Temp (°F)"},
-        {name: "maxAmbientTemp", label: "Max Ambient Temp (°F)"},
+        {name: "minAmbientTemp", label: "Daily Min Ambient Temp (°F)"},
+        {name: "maxAmbientTemp", label: "Daily Max Ambient Temp (°F)"},
         {name: "fixedTemp", label: "Fixed Temp (°F, or 'None')"},
         {name: "cloudCover", label: "Cloud Cover (0-100%)"},
     ],
