@@ -139,7 +139,7 @@ function App() {
                 // Add to change log with the label instead of the name
                 setChangeLog(prevLog => [
                     ...prevLog,
-                    `${label} changed from ${initialValue} to ${newValue} at hour ${selectedHour}`
+                    `${label} changed from ${initialValue} to ${newValue} during hour ${selectedHour}`
                 ]);
 
                 // Check if all input values are valid (not empty)
@@ -161,7 +161,7 @@ function App() {
                     };
 
                     // Run the simulation with updated inputs and changes
-                    runSimulation(updatedInputs, updatedChanges, selectedHour+1);
+                    runSimulation(updatedInputs, updatedChanges, selectedHour);
                 }
 
                 // Update the initial value for this input
@@ -353,6 +353,7 @@ function App() {
                                 ambientTemp={temperature[selectedHour]?.ambientTemp}
                                 minMaxTemps={calculateMinMaxTemps()}
                                 hour={(initialInputs.hour + selectedHour) % 24}
+                                cloudCover={inputs.cloudCover}
                             />
                         </div>
                     ) : (
@@ -379,11 +380,11 @@ function App() {
                                             <td>
                                                 {changeLog
                                                     .filter(log => {
-                                                        const logHour = parseInt(log.split(' at hour ')[1]);
+                                                        const logHour = parseInt(log.split(' during hour ')[1]);
                                                         return logHour === index && logHour <= selectedHour;
                                                     })
                                                     .map((log, logIndex) => {
-                                                        const varChanged = log.split(' at hour')[0];
+                                                        const varChanged = log.split(' during hour')[0];
                                                         return <div key={logIndex}>{varChanged}</div>;
                                                     })
                                                 }
