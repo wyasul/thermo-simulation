@@ -58,7 +58,7 @@ const inputFields = {
     ]
 };
 
-const restrictedFields = ['fluidTemp', 'density', 'tankTemp', 'tankVolume', 'area', 'duration'];
+const restrictedFields = ['fluidTemp', 'tankTemp', 'tankVolume', 'area', 'duration', 'U_L', 'efficiency', 'transmittance', 'absorptance'];
 
 function App() {
     const [inputs, setInputs] = useState(initialInputs);
@@ -82,32 +82,37 @@ function App() {
             changeLogRef.current.scrollTop = changeLogRef.current.scrollHeight;
         }
     }, [changeLog]);
-
     const handleInputChange = async (name, value) => {
-        let parsedValue = parseFloat(value);
+        let parsedValue;
         const field = Object.values(inputFields).flat().find(f => f.name === name);
         
-        if (isNaN(parsedValue)) {
-            // If the value is NaN, keep it as is
-            parsedValue = value;
+        if (name === 'fixedTemp' && value === 'None') {
+            parsedValue = 'None';
         } else {
-            // Applying value limits
-            if (name.includes('Efficiency') || name === 'transmittance' || name === 'absorptance') {
-                if (!isNaN(parsedValue)) {
-                    if (value === '0.' || (parsedValue >= 0 && parsedValue <= 1)) {
-                        parsedValue = value;
-                    } else {
-                        parsedValue = Math.max(0, Math.min(1, parsedValue));
-                    }
-                }
-            } else if (name === 'cloudCover') {
-                parsedValue = Math.max(0, Math.min(100, parsedValue));
-            } else if (name.includes('Temp')) {
-                // Negatives are allowed. Disallowing values over 100,000
-                parsedValue = Math.min(100000, parsedValue);
+            parsedValue = parseFloat(value);
+            
+            if (isNaN(parsedValue)) {
+                // If the value is NaN, keep it as is
+                parsedValue = value;
             } else {
-                // For all other numeric fields
-                parsedValue = Math.max(0, Math.min(100000, parsedValue));
+                // Applying value limits
+                if (name.includes('Efficiency') || name === 'transmittance' || name === 'absorptance') {
+                    if (!isNaN(parsedValue)) {
+                        if (value === '0.' || (parsedValue >= 0 && parsedValue <= 1)) {
+                            parsedValue = value;
+                        } else {
+                            parsedValue = Math.max(0, Math.min(1, parsedValue));
+                        }
+                    }
+                } else if (name === 'cloudCover') {
+                    parsedValue = Math.max(0, Math.min(100, parsedValue));
+                } else if (name.includes('Temp')) {
+                    // Negatives are allowed. Disallowing values over 100,000
+                    parsedValue = Math.min(100000, parsedValue);
+                } else {
+                    // For all other numeric fields
+                    parsedValue = Math.max(0, Math.min(100000, parsedValue));
+                }
             }
         }
 
@@ -118,7 +123,12 @@ function App() {
     // Handling when paramaters are changed in the before or during simulation
     const handleInputSubmit = (event, name) => {
         if (event.key === 'Enter' || event.type === 'blur') {
-            const newValue = event.target.value === '' ? '' : parseFloat(event.target.value);
+            let newValue;
+            if (name === 'fixedTemp' && event.target.value === 'None') {
+                newValue = 'None';
+            } else {
+                newValue = event.target.value === '' ? '' : parseFloat(event.target.value);
+            }
             const initialValue = initialValuesRef.current[name];
             
             if (newValue !== initialValue && newValue !== '') {
@@ -151,7 +161,7 @@ function App() {
                     };
 
                     // Run the simulation with updated inputs and changes
-                    runSimulation(updatedInputs, updatedChanges, selectedHour);
+                    runSimulation(updatedInputs, updatedChanges, selectedHour+1);
                 }
 
                 // Update the initial value for this input
@@ -161,9 +171,9 @@ function App() {
                 };
             }
 
-            // If Enter was pressed
             if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent form submission if within a form
+                // Prevent form submission if within a form
+                event.preventDefault(); 
                 
                 // Remove 'editing' class and add 'submitted' class
                 event.target.classList.remove('editing');
