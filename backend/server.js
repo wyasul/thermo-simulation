@@ -57,12 +57,13 @@ app.post('/simulate', (req, res) => {
     }
 
     // Temperatures from the simulation are converted to Fahrenheit
-    const temperatures = simulateTemperature(initialParams, inputChanges, startStep).map(temp => ({
-        time: temp.time,
-        fluidTemp: celsiusToFahrenheit(temp.fluidTemp),
-        panelTemp: celsiusToFahrenheit(temp.panelTemp),
-        tankTemp: celsiusToFahrenheit(temp.tankTemp),
-        ambientTemp: celsiusToFahrenheit(temp.ambientTemp)
+    const temperatures = simulateTemperature(initialParams, inputChanges, startStep).map(temp => (
+        {
+            time: temp.time,
+            fluidTemp: celsiusToFahrenheit(temp.fluidTemp),
+            panelTemp: celsiusToFahrenheit(temp.panelTemp),
+            tankTemp: celsiusToFahrenheit(temp.tankTemp),
+            ambientTemp: celsiusToFahrenheit(temp.ambientTemp)
     }));
     res.json({ temperatures });
 });

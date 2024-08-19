@@ -96,51 +96,32 @@ function App() {
                 parsedValue = value;
             } else {
                 // Applying value limits
-                if (name.includes('Efficiency') || name === 'transmittance' || name === 'absorptance') {
-                    if (!isNaN(parsedValue)) {
-                        if (value === '0.' || (parsedValue >= 0 && parsedValue <= 1)) {
-                            parsedValue = value;
+                const limits = {
+                    'Efficiency': [0, 1],
+                    'transmittance': [0, 1],
+                    'absorptance': [0, 1],
+                    'cloudCover': [0, 100],
+                    'tankTemp': [-100000, 100000],
+                    'fluidTemp': [-100000, 100000],
+                    'area': [0.000001, 100000],
+                    'duration': [1, 100000],
+                    'U_L': [0.000001, 100000],
+                    'hydraulicHead': [0.000001, 100000],
+                    'density': [0.000001, 100000],
+                    'specificHeat': [0.000001, 100000],
+                    'tankVolume': [0.000001, 100000]
+                };
+
+                for (const [key, [min, max]] of Object.entries(limits)) {
+                    if (name.includes(key) || name === key) {
+                        if (key === 'tankTemp' || key === 'fluidTemp') {
+                            parsedValue = parsedValue === 0 ? min : Math.max(min, Math.min(max, parsedValue));
                         } else {
-                            parsedValue = Math.max(0, Math.min(1, parsedValue));
+                            parsedValue = Math.max(min, Math.min(max, parsedValue));
                         }
+                        break;
                     }
-                } else if (name === 'cloudCover') {
-                    parsedValue = Math.max(0, Math.min(100, parsedValue));
-                } else if (name.includes('Temp')) {
-                    // Negatives are allowed. Disallowing values over 100,000
-                    parsedValue = Math.min(100000, parsedValue);
-                } else if (name === 'area') {
-                    // Area can't be 0
-                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
-                } else if (name === 'duration') {
-                    // Duration can't be 0
-                    parsedValue = Math.max(1, Math.min(100000, parsedValue));
-
-                } else if (name === 'U_L') {
-                    // Heat loss coefficient can't be 0
-                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
-                } else if (name === 'hydraulicHead') {
-                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
                 }
-                else if (name === 'density') {
-                    // Density can't be 0
-                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
-                }
-                else if (name === 'specificHeat') {
-                    // Specific heat can't be 0
-                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
-                }
-                else if (name === 'tankVolume') {
-                    // Tank volume can't be 0
-                    parsedValue = Math.max(0.000001, Math.min(100000, parsedValue));
-                }
-
-
-                else {
-                    // For all other numeric fields
-                    parsedValue = Math.max(0, Math.min(100000, parsedValue));
-                }
-
             }
         }
 
@@ -219,7 +200,6 @@ function App() {
         const filteredParams = Object.fromEntries(
             Object.entries(params).filter(([_, value]) => value !== '')
         );
-
         try {
             const response = await fetch('http://localhost:3001/simulate', {
                 method: 'POST',
