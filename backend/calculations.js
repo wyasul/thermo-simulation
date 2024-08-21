@@ -149,6 +149,7 @@ const calculateHeatTransferToFluid = (solarPanelVars, currentFluidTemp, U_L) => 
 
         const q_u_joules_per_second = (q_u * 1e6) / 3600;
 
+        // Equations from chapter 6.9 of Beckham and Duffie, figure 6.9.4
         T_fluid = currentFluidTemp + ((q_u_joules_per_second) / (F_R * U_L) * (1 - F_prime_prime));
         T_plate = currentFluidTemp + ((q_u_joules_per_second) / (F_R * U_L) * (1 - F_R));
 
